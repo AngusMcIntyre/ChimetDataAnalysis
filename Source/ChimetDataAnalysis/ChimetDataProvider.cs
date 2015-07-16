@@ -9,18 +9,28 @@ namespace ChimetDataAnalysis
 {
     class ChimetDataProvider
     {
-        public async Task<Dictionary<string, IEnumerable<double>>> DownloadData(DateTime day)
+        public string Site { get; set; }
+
+        public Station Station { get; set; }
+
+        public ChimetDataProvider(Station station)
         {
-            WebRequest dateRequest = HttpWebRequest.Create(string.Format("http://www.sotonmet.co.uk/archive/2015/July/CSV/Sot{0:ddMMMyyyy}.csv", day));
+            this.Station = station;
+        }
 
-            WebResponse data = await dateRequest.GetResponseAsync();
+        public async Task<IEnumerable<ChimetDataRecord>> DownloadData(DateTime day)
+        {
+            WebRequest dateRequest = HttpWebRequest.Create(string.Format("http://{1}/archive/{0:yyyy}/{0:MMMM}/CSV/{2}{0:ddMMMyyyy}.csv", day, this.Station.Address, this.Station.ShortName));
 
-            using (var reader = new System.IO.StreamReader(data.GetResponseStream()))
+            WebResponse data = await dateRequest.GetResponseAsync().ConfigureAwait(false);
+
+            CsvHelper.Configuration.CsvConfiguration config = new CsvHelper.Configuration.CsvConfiguration();
+            config.RegisterClassMap<ChimetDataRecordMap>();
+
+            using (var reader = new CsvHelper.CsvReader(new System.IO.StreamReader(data.GetResponseStream()), config))
             {
-                string content = await reader.ReadToEndAsync();
+                return reader.GetRecords<ChimetDataRecord>().ToList().AsReadOnly();
             }
-
-            return null;
         }
     }
 }

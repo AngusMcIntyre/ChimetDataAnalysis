@@ -69,7 +69,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ChartViewModel.cs" />
     <Compile Include="ChimetDataRecord.cs" />
+    <Compile Include="Station.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -79,6 +81,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ChimetDataProvider.cs" />
+    <Compile Include="ChimetDataRecordMap.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

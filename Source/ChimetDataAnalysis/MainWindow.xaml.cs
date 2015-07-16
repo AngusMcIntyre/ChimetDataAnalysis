@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using OxyPlot.Series;
 
 namespace ChimetDataAnalysis
 {
@@ -22,21 +23,59 @@ namespace ChimetDataAnalysis
     {
         public MainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
+            this.plotView.Axes.Add(new OxyPlot.Wpf.DateTimeAxis()
+            {
+                Position = OxyPlot.Axes.AxisPosition.Bottom,
+                IntervalType = OxyPlot.Axes.DateTimeIntervalType.Minutes
+            });
+
+            this.plotView.Axes.Add(new OxyPlot.Wpf.LinearAxis()
+            {
+                Position = OxyPlot.Axes.AxisPosition.Left, LabelFormatter = p => string.Format("{0}kn", p)
+            });
+
+            this.DatePicker_Day.SelectedDate = DateTime.Now.AddDays(-1);
             this.PopulateData();
         }
 
-        private async void PopulateData()
+        async Task PopulateData()
         {
-            await this.DownloadData(DateTime.Now.AddDays(-1));
+            this.IsEnabled = false;
+            try
+            {
+                await this.PopulateData(this.DatePicker_Day.SelectedDate.Value, (Station)this.ComboBox_WeatherStation.SelectedItem);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                this.IsEnabled = true;
+            }
         }
 
-        private async Task DownloadData(DateTime day)
+        private async Task PopulateData(DateTime day, Station station)
         {
-            ChimetDataProvider dataDownloader = new ChimetDataProvider();
+            // test that 'station' is not null and throw an exception. 
+            if (station == null)
+            {
+                throw new ArgumentNullException("station");
+            }
+
+            ChimetDataProvider dataDownloader = new ChimetDataProvider(station);
 
             var data = await dataDownloader.DownloadData(day);
+
+            this.LineSeries_Average.ItemsSource = data.Select(record => new OxyPlot.DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(record.Time), record.AverageWindSpeed)).ToArray();
+            this.LineSeries_Gust.ItemsSource = data.Select(record => new OxyPlot.DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(record.Time), record.MaximumWindSpeed)).ToArray();
+        }
+
+        private void ButtonApply_Click(object sender, RoutedEventArgs e)
+        {
+            this.PopulateData();
         }
     }
 }
