@@ -28,12 +28,16 @@ namespace ChimetDataAnalysis
             this.plotView.Axes.Add(new OxyPlot.Wpf.DateTimeAxis()
             {
                 Position = OxyPlot.Axes.AxisPosition.Bottom,
-                IntervalType = OxyPlot.Axes.DateTimeIntervalType.Minutes
+                IntervalType = OxyPlot.Axes.DateTimeIntervalType.Minutes, MajorGridlineStyle = OxyPlot.LineStyle.Automatic
             });
 
             this.plotView.Axes.Add(new OxyPlot.Wpf.LinearAxis()
             {
-                Position = OxyPlot.Axes.AxisPosition.Left, LabelFormatter = p => string.Format("{0}kn", p)
+                Position = OxyPlot.Axes.AxisPosition.Left,
+                LabelFormatter = p => string.Format("{0}kn", p), 
+                MajorGridlineStyle = OxyPlot.LineStyle.Automatic, 
+                MinorGridlineStyle = OxyPlot.LineStyle.Dot, 
+                MinorStep = 1
             });
 
             this.DatePicker_Day.SelectedDate = DateTime.Now.AddDays(-1);
