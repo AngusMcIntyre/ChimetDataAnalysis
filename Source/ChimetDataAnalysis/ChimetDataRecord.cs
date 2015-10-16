@@ -9,8 +9,8 @@ namespace ChimetDataAnalysis
     class ChimetDataRecord
     {
         public DateTime Time { get; set; }
-        public double AverageWindSpeed { get; set; }
-        public double WindBearing { get; set; }
-        public double MaximumWindSpeed { get; set; }
+        public double? AverageWindSpeed { get; set; }
+        public double? WindBearing { get; set; }
+        public double? MaximumWindSpeed { get; set; }
     }
 }

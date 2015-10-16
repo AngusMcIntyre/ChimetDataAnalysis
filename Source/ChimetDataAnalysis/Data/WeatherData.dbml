@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="WeatherData" Class="WeatherDataDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Data\WeatherData.mdf;Integrated Security=True;Connect Timeout=30" SettingsObjectName="ChimetDataAnalysis.Properties.Settings" SettingsPropertyName="WeatherDataConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.WeatherStation" Member="WeatherStations">
+    <Type Name="WeatherStation">
+      <Column Name="OID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Association Name="WeatherStation_WeatherEntry" Member="WeatherEntry" ThisKey="OID" OtherKey="OID" Type="WeatherEntry" Cardinality="One" />
+    </Type>
+  </Table>
+  <Table Name="dbo.WeatherEntry" Member="WeatherEntries">
+    <Type Name="WeatherEntry">
+      <Column Name="OID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="WindSpeed" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="WindBearing" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="WindGust" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="AirTemperature" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="WaterTemperature" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="AirPressure" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="WeatherStation" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Timestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="WeatherStation_WeatherEntry" Member="WeatherStation1" ThisKey="OID" OtherKey="OID" Type="WeatherStation" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

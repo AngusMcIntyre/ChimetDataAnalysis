@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using OxyPlot.Series;
+using ChimetDataAnalysis.Data;
 
 namespace ChimetDataAnalysis
 {
@@ -71,15 +72,20 @@ namespace ChimetDataAnalysis
 
             ChimetDataProvider dataDownloader = new ChimetDataProvider(station);
 
-            var data = await dataDownloader.DownloadData(day);
+            IEnumerable<ChimetDataRecord> data = await dataDownloader.DownloadData(day);
 
-            this.LineSeries_Average.ItemsSource = data.Select(record => new OxyPlot.DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(record.Time), record.AverageWindSpeed)).ToArray();
-            this.LineSeries_Gust.ItemsSource = data.Select(record => new OxyPlot.DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(record.Time), record.MaximumWindSpeed)).ToArray();
+            this.LineSeries_Average.ItemsSource = data
+                .Where(record => record.AverageWindSpeed != null)
+                .Select(record => new OxyPlot.DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(record.Time), (double)record.AverageWindSpeed)).ToArray();
+
+            this.LineSeries_Gust.ItemsSource = data
+                .Where(record => record.MaximumWindSpeed != null)
+                .Select(record => new OxyPlot.DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(record.Time), (double)record.MaximumWindSpeed)).ToArray();
         }
 
-        private void ButtonApply_Click(object sender, RoutedEventArgs e)
+        private async void ButtonApply_Click(object sender, RoutedEventArgs e)
         {
-            this.PopulateData();
+            await this.PopulateData();
         }
     }
 }

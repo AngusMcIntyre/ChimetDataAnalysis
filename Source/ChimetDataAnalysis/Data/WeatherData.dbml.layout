@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="WeatherData">
+  <DataContextMoniker Name="/WeatherDataDataContext" />
+  <nestedChildShapes>
+    <classShape Id="20929e09-6a0b-49a7-af99-c483e5dba68f" absoluteBounds="2.75, 3.375, 2, 1.1939925130208333">
+      <DataClassMoniker Name="/WeatherDataDataContext/WeatherStation" />
+      <nestedChildShapes>
+        <elementListCompartment Id="42ad73e6-528d-4269-9a7b-f18e1f9a3b67" absoluteBounds="2.765, 3.835, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="422efcb7-c530-423c-a3ec-00fa56cd132e" absoluteBounds="6.125, 4, 2, 2.5401025390625">
+      <DataClassMoniker Name="/WeatherDataDataContext/WeatherEntry" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1a2ba0ac-4982-459c-b59d-496243ec1dce" absoluteBounds="6.14, 4.46, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(4.75 : 4.28449625651042); (6.125 : 4.28449625651042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/WeatherDataDataContext/WeatherStation/WeatherStation_WeatherEntry" />
+      <nodes>
+        <classShapeMoniker Id="20929e09-6a0b-49a7-af99-c483e5dba68f" />
+        <classShapeMoniker Id="422efcb7-c530-423c-a3ec-00fa56cd132e" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>
