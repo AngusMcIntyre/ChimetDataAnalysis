@@ -42,10 +42,36 @@ namespace ChimetDataAnalysis
             });
 
             this.DatePicker_Day.SelectedDate = DateTime.Now.AddDays(-1);
-            this.PopulateData();
+            this.Loaded += MainWindow_Loaded;
         }
 
-        async Task PopulateData()
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            await this.PopulateData();
+
+            StartRegularDataCheck(System.Threading.CancellationToken.None);
+        }
+
+        private void StartRegularDataCheck(System.Threading.CancellationToken cancellationToken)
+        {
+            Task.Run(async () =>
+            {
+                var sotonmet = new SouthamptonVTSDataSource(SouthamptonVTSStation.Dockhead);
+                var bramble = new SouthamptonVTSDataSource(SouthamptonVTSStation.Bramble);
+
+                while (!cancellationToken.IsCancellationRequested)
+                {
+                    var sotonRecord = sotonmet.GetLatestDataPoint();
+                    var brambleRecord = bramble.GetLatestDataPoint();
+
+                    await Task.Delay(60000).ConfigureAwait(false);
+                }
+
+                cancellationToken.ThrowIfCancellationRequested();
+            }, cancellationToken);
+        }
+
+        private async Task PopulateData()
         {
             this.IsEnabled = false;
             try
