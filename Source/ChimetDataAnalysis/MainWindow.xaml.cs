@@ -43,6 +43,8 @@ namespace ChimetDataAnalysis
 
             this.DatePicker_Day.SelectedDate = DateTime.Now.AddDays(-1);
             this.PopulateData();
+
+            new SouthamptonVTSDataSource(null);
         }
 
         async Task PopulateData()
