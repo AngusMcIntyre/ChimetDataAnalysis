@@ -9,8 +9,8 @@ namespace ChimetDataAnalysis
 {
     public enum SouthamptonVTSStation
     {
-        Dockhead,
-        Bramble
+        Sotonmet,
+        Bramblemet
     }
 
     /// <summary>
@@ -29,7 +29,7 @@ namespace ChimetDataAnalysis
         /// Gets a <see cref="ChimetDataRecord"/> insance containing hthe latest data from the specified Southampton VTS site.
         /// </summary>
         /// <returns></returns>
-        public ChimetDataRecord GetLatestDataPoint()
+        public async Task<ChimetDataRecord> GetLatestDataPointAsync()
         {
             try
             {
@@ -38,7 +38,7 @@ namespace ChimetDataAnalysis
 
                 DateTime timeStamp;
 
-                using (var reader = new System.IO.StreamReader(request.GetResponse().GetResponseStream()))
+                using (var reader = new System.IO.StreamReader((await request.GetResponseAsync()).GetResponseStream()))
                 {
                     timeStamp = DateTime.Parse(reader.ReadToEnd());
                 }
@@ -49,7 +49,8 @@ namespace ChimetDataAnalysis
 
                 // load response as xml
                 System.Xml.Linq.XDocument doc;
-                using (var reader = new System.IO.StreamReader(request.GetResponse().GetResponseStream()))
+
+                using (var reader = new System.IO.StreamReader((await request.GetResponseAsync()).GetResponseStream()))
                 {
                     doc = System.Xml.Linq.XDocument.Load(reader);
                 }
@@ -99,10 +100,10 @@ namespace ChimetDataAnalysis
         {
             switch (station)
             {
-                case SouthamptonVTSStation.Bramble:
+                case SouthamptonVTSStation.Bramblemet:
                     return "D:\\ftp\\southampton\\Bramble.xml";
 
-                case SouthamptonVTSStation.Dockhead:
+                case SouthamptonVTSStation.Sotonmet:
                 default:
                     return "D:\\ftp\\southampton\\Sotonmet.xml";
             }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChimetDataAnalysis
 {
-    class ChimetDataRecord
+    public class ChimetDataRecord
     {
         public DateTime Time { get; set; }
         public double? AverageWindSpeed { get; set; }

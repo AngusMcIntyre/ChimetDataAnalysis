@@ -22,6 +22,8 @@ namespace ChimetDataAnalysis
     /// </summary>
     public partial class MainWindow : Window
     {
+        StationPoller poller;
+
         public MainWindow()
         {
             this.InitializeComponent();
@@ -48,14 +50,16 @@ namespace ChimetDataAnalysis
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             await this.PopulateData();
+            this.poller = new StationPoller(System.Threading.CancellationToken.None);
 
             StartRegularDataCheck(System.Threading.CancellationToken.None);
+            this.poller.NewRecord += (sender, args) => System.Diagnostics.Debug.WriteLine("Record received from {0}", new[] { args.StationID });
         }
 
         private void StartRegularDataCheck(System.Threading.CancellationToken cancellationToken)
         {
             Task.Run(async () =>
-            {
+        {
                 var sotonmet = new SouthamptonVTSDataSource(SouthamptonVTSStation.Dockhead);
                 var bramble = new SouthamptonVTSDataSource(SouthamptonVTSStation.Bramble);
 

@@ -92,6 +92,7 @@
     <Compile Include="ChartViewModel.cs" />
     <Compile Include="ChimetDataRecord.cs" />
     <Compile Include="Data\DatabaseAccess.cs" />
+    <Compile Include="NewRecordEventArgs.cs" />
     <Compile Include="NoDataDownloadedException.cs" />
     <Compile Include="SouthamptonVTSDataSource.cs" />
     <Compile Include="Station.cs" />
@@ -100,6 +101,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WeatherData.dbml</DependentUpon>
     </Compile>
+    <Compile Include="StationPoller.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
