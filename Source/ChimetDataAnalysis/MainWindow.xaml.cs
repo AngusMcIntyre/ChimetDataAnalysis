@@ -84,7 +84,13 @@ namespace ChimetDataAnalysis
             }
             catch(Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                // log and swallow this exception
+                System.Diagnostics.Trace.TraceError("An exception occured while populating historic data for {0} from {1}.", this.DatePicker_Day.SelectedDate.Value, ((Station)this.ComboBox_WeatherStation.SelectedItem).Address);
+                System.Diagnostics.Trace.TraceError("{0}", ex);
+
+                // clear all data to make it clear that nothing was downloaded.
+                this.LineSeries_Average.ItemsSource = null;
+                this.LineSeries_Gust.ItemsSource = null;
             }
             finally
             {
