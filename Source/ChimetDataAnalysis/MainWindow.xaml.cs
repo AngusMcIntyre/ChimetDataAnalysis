@@ -44,35 +44,29 @@ namespace ChimetDataAnalysis
             });
 
             this.DatePicker_Day.SelectedDate = DateTime.Now.AddDays(-1);
+
+            this.DatePicker_Day.SelectedDateChanged += DatePicker_Day_SelectedDateChanged;
+            this.ComboBox_WeatherStation.SelectionChanged += ComboBox_WeatherStation_SelectionChanged;
             this.Loaded += MainWindow_Loaded;
+
+            this.poller = new StationPoller(System.Threading.CancellationToken.None);
+
+            this.poller.NewRecord += (sender, args) => System.Diagnostics.Debug.WriteLine("Record received from {0}", new[] { args.StationID });
+        }
+
+        private async void ComboBox_WeatherStation_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            await this.PopulateData();
+        }
+
+        private async void DatePicker_Day_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            await this.PopulateData();
         }
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             await this.PopulateData();
-            this.poller = new StationPoller(System.Threading.CancellationToken.None);
-
-            StartRegularDataCheck(System.Threading.CancellationToken.None);
-            this.poller.NewRecord += (sender, args) => System.Diagnostics.Debug.WriteLine("Record received from {0}", new[] { args.StationID });
-        }
-
-        private void StartRegularDataCheck(System.Threading.CancellationToken cancellationToken)
-        {
-            Task.Run(async () =>
-        {
-                var sotonmet = new SouthamptonVTSDataSource(SouthamptonVTSStation.Dockhead);
-                var bramble = new SouthamptonVTSDataSource(SouthamptonVTSStation.Bramble);
-
-                while (!cancellationToken.IsCancellationRequested)
-                {
-                    var sotonRecord = sotonmet.GetLatestDataPoint();
-                    var brambleRecord = bramble.GetLatestDataPoint();
-
-                    await Task.Delay(60000).ConfigureAwait(false);
-                }
-
-                cancellationToken.ThrowIfCancellationRequested();
-            }, cancellationToken);
         }
 
         private async Task PopulateData()
