@@ -15,8 +15,8 @@
             <DatePicker x:Name="DatePicker_Day"/>
         </ToolBar>
         <oxyplot:PlotView x:Name="plotView">
-            <oxyplot:LineSeries x:Name="LineSeries_Average"/>
-            <oxyplot:LineSeries x:Name="LineSeries_Gust"/>
+            <oxyplot:LineSeries x:Name="LineSeries_Average" Color="Blue"/>
+            <oxyplot:LineSeries x:Name="LineSeries_Gust" Color="Red"/>
         </oxyplot:PlotView>
     </DockPanel>
 </Window>
