@@ -119,7 +119,19 @@ namespace ChimetDataAnalysis
                 .Select(record => new OxyPlot.DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(record.Time), (double)record.MaximumWindSpeed)).ToArray();
         }
 
+        private void Button_PreviousDay_Click(object sender, RoutedEventArgs e)
         {
+            this.DatePicker_Day.SelectedDate = this.DatePicker_Day.SelectedDate.Value.AddDays(-1);
+        }
+
+        private void Button_NextDay_Click(object sender, RoutedEventArgs e)
+        {
+            this.DatePicker_Day.SelectedDate = this.DatePicker_Day.SelectedDate.Value.AddDays(1);
+        }
+
+        private void Button_GoToToday_Click(object sender, RoutedEventArgs e)
+        {
+            this.DatePicker_Day.SelectedDate = DateTime.Now.Date;
         }
     }
 }
