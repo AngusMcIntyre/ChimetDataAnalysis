@@ -13,7 +13,6 @@
                 <chi:Station Name="Bramblemet" ShortName="Bra" Address="www.bramblemet.co.uk"/>
             </ComboBox>
             <DatePicker x:Name="DatePicker_Day"/>
-            <Button Click="ButtonApply_Click">Apply</Button>
         </ToolBar>
         <oxyplot:PlotView x:Name="plotView">
             <oxyplot:LineSeries x:Name="LineSeries_Average"/>

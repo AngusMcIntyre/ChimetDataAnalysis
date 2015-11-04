@@ -119,9 +119,7 @@ namespace ChimetDataAnalysis
                 .Select(record => new OxyPlot.DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(record.Time), (double)record.MaximumWindSpeed)).ToArray();
         }
 
-        private async void ButtonApply_Click(object sender, RoutedEventArgs e)
         {
-            await this.PopulateData();
         }
     }
 }
